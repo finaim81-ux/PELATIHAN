@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mengurutkan Kata Bahasa Inggris</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #064e3b; /* hijau tua */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #a7f3d0; /* hijau muda */
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      width: min(600px, 90%);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 16px;
+    }
+    #word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .word {
+      background-color: white;
+      border: 2px solid #2563eb;
+      border-radius: 6px;
+      padding: 8px 14px;
+      cursor: grab;
+      user-select: none;
+      font-weight: bold;
+    }
+    textarea {
+      width: 100%;
+      height: 80px;
+      border-radius: 8px;
+      border: 2px solid #2563eb;
+      font-size: 16px;
+      padding: 10px;
+      resize: none;
+      background-color: white;
+    }
+    .buttons {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    .feedback {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .correct {
+      color: #0b6b2f;
+    }
+    .wrong {
+      color: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Urutkan Kata Bahasa Inggris</h2>
+    <p>Susun kalimat yang benar dengan cara drag & drop kata di bawah ini ke dalam kotak.</p>
+
+    <div id="word-bank"></div>
+
+    <textarea id="sentence" placeholder="Tarik kata ke sini..." readonly></textarea>
+
+    <div class="buttons">
+      <button id="checkBtn">Hasil</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    <div id="feedback" class="feedback"></div>
+  </div>
+
+  <script>
+    const correctSentence = "I am going to the market";
+    const words = ["I", "am", "going", "to", "the", "market"];
+    const wordBank = document.getElementById("word-bank");
+    const sentenceBox = document.getElementById("sentence");
+    const feedback = document.getElementById("feedback");
+
+    // Fungsi untuk mengacak urutan kata
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Tampilkan kata secara acak
+    function renderWords() {
+      wordBank.innerHTML = "";
+      shuffle([...words]).forEach((word) => {
+        const div = document.createElement("div");
+        div.className = "word";
+        div.textContent = word;
+        div.draggable = true;
+
+        // Event drag
+        div.addEventListener("dragstart", (e) => {
+          e.dataTransfer.setData("text", word);
+          setTimeout(() => div.style.display = "none", 0);
+        });
+        div.addEventListener("dragend", () => {
+          div.style.display = "inline-block";
+        });
+        wordBank.appendChild(div);
+      });
+    }
+
+    // Area drop
+    sentenceBox.addEventListener("dragover", (e) => e.preventDefault());
+    sentenceBox.addEventListener("drop", (e) => {
+      e.preventDefault();
+      const word = e.dataTransfer.getData("text");
+      if (word) {
+        sentenceBox.value += (sentenceBox.value ? " " : "") + word;
+        // Hilangkan kata yang sudah dipakai
+        const wordElements = document.querySelectorAll(".word");
+        wordElements.forEach(el => {
+          if (el.textContent === word) el.remove();
+        });
+      }
+    });
+
+    // Tombol cek hasil
+    document.getElementById("checkBtn").addEventListener("click", () => {
+      const userAnswer = sentenceBox.value.trim();
+      if (userAnswer === correctSentence) {
+        feedback.textContent = "Hebat, jawaban anda benar!";
+        feedback.className = "feedback correct";
+      } else {
+        feedback.textContent = "Maaf, jawaban anda salah, ulangi lagi.";
+        feedback.className = "feedback wrong";
+      }
+    });
+
+    // Tombol reset
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      sentenceBox.value = "";
+      feedback.textContent = "";
+      renderWords();
+    });
+
+    // Pertama kali tampilkan
+    renderWords();
+  </script>
+</body>
+</html>
