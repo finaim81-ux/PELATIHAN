@@ -3,27 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flipbook Responsif</title>
+<title>Flipbook dengan Suara</title>
 <style>
-  * {
-    box-sizing: border-box;
-  }
+  * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    background-color: white; /* Background putih polos */
+    background-color: white; /* Background putih */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* fallback */
-    min-height: 100dvh; /* stabil di Android */
+    height: 100vh;
+    min-height: 100dvh;
     overflow: hidden;
   }
 
   .book {
-    width: 95vw;          /* Lebar menyesuaikan layar HP */
-    max-width: 400px;     /* Batas maksimal agar tidak terlalu besar di tablet */
-    aspect-ratio: 3/5;    /* Proporsi seperti buku */
+    width: 95vw;
+    max-width: 400px;
+    aspect-ratio: 3/5;
     position: relative;
     perspective: 2000px;
   }
@@ -48,17 +46,14 @@
     display: block;
   }
 
-  /* Cover depan */
   .cover img {
     border-radius: 6px;
   }
 
-  /* Back cover */
   .back-cover {
     background: #e0e0e0;
   }
 
-  /* Efek bayangan balik halaman */
   .flipped {
     box-shadow: -5px 0 10px rgba(0,0,0,0.2);
   }
@@ -66,57 +61,59 @@
 </head>
 <body>
 <div class="book" id="book">
-  <!-- Halaman 1 -->
   <div class="page" data-page="1">
     <div class="page-content">
       <img src="https://finaim81-ux.github.io/picture/2HP.jpg" alt="Halaman 1">
     </div>
   </div>
 
-  <!-- Halaman 2 -->
   <div class="page" data-page="2">
     <div class="page-content">
       <img src="https://finaim81-ux.github.io/picture/3HP.jpg" alt="Halaman 2">
     </div>
   </div>
 
-  <!-- Halaman 3 -->
   <div class="page" data-page="3">
     <div class="page-content">
       <img src="https://finaim81-ux.github.io/picture/4HP.jpg" alt="Halaman 3">
     </div>
   </div>
 
-  <!-- Halaman 4 -->
   <div class="page" data-page="4">
     <div class="page-content">
       <img src="https://finaim81-ux.github.io/picture/5HP.jpg" alt="Halaman 4">
     </div>
   </div>
 
-  <!-- Back cover -->
   <div class="page back-cover" data-page="5"></div>
 
-  <!-- Cover depan -->
   <div class="page cover" data-page="0">
     <img src="https://finaim81-ux.github.io/picture/1HP.jpg" alt="Cover Buku">
   </div>
 </div>
 
+<!-- 🎵 Tambahkan elemen audio di bawah ini -->
+<audio id="flipSound" src="https://finaim81-ux.github.io/audio/0577. Kekuatan - AShamaluevMusic.mp3
+.mp3" preload="auto"></audio>
+
 <script>
   const pages = document.querySelectorAll(".page");
+  const flipSound = document.getElementById("flipSound");
   let zIndexCounter = 1;
 
   pages.forEach((page, index) => {
-    // Atur urutan tumpukan halaman
     if (page.classList.contains("cover")) {
       page.style.zIndex = pages.length + 10;
     } else {
       page.style.zIndex = pages.length - index;
     }
 
-    // Klik untuk balik halaman
     page.addEventListener("click", () => {
+      // 🔊 Putar suara saat halaman dibalik
+      flipSound.currentTime = 0; 
+      flipSound.play();
+
+      // Efek flip halaman
       if (!page.classList.contains("flipped")) {
         page.style.transform = "rotateY(-180deg)";
         page.classList.add("flipped");
