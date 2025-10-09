@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teks Rumpang: Pengertian Komputer</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #ffe6f2; /* pink lembut untuk latar */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    background-color: #ffb6c1; /* area soal pink */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+
+  p {
+    font-size: 1.1em;
+    line-height: 1.6;
+  }
+
+  input[type="text"] {
+    width: 90px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white; /* putih bersih */
+    text-align: center;
+  }
+
+  .buttons {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  button {
+    background-color: #add8e6; /* biru muda */
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background-color: #9cd3eb;
+  }
+
+  #feedback {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1em;
+  }
+
+  audio {
+    display: block;
+    margin: 10px auto 20px auto;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Teks Rumpang: Pengertian Komputer</h2>
+
+  <!-- 🎵 Audio yang harus diputar siswa -->
+  <p><strong>Dengarkan rekaman berikut sebelum mengisi teks:</strong></p>
+  <audio controls>
+    <source src="https://finaim81-ux.github.io/audio/pengertiankomputer.mp3" type="audio/mpeg">
+    Browser Anda tidak mendukung elemen audio.
+  </audio>
+
+  <!-- 🧩 Soal Teks Rumpang -->
+  <p>
+    A computer is an 
+    <input type="text" id="ans1" placeholder="[1]"> device that accepts data (input),
+    <input type="text" id="ans2" placeholder="[2]"> it according to program instructions, 
+    and produces 
+    <input type="text" id="ans3" placeholder="[3]"> (output), as well as storing data for future use. 
+    A computer consists of two main components: hardware, which is the physical 
+    <input type="text" id="ans4" placeholder="[4]">, and software, which consists of instructions or programs that control the hardware.
+  </p>
+
+  <!-- 🔘 Tombol Hasil & Reset -->
+  <div class="buttons">
+    <button onclick="checkAnswers()">Hasil</button>
+    <button onclick="resetAnswers()">Reset</button>
+  </div>
+
+  <!-- 💬 Feedback -->
+  <div id="feedback"></div>
+</div>
+
+<script>
+function checkAnswers() {
+  const ans1 = document.getElementById("ans1").value.trim().toLowerCase();
+  const ans2 = document.getElementById("ans2").value.trim().toLowerCase();
+  const ans3 = document.getElementById("ans3").value.trim().toLowerCase();
+  const ans4 = document.getElementById("ans4").value.trim().toLowerCase();
+
+  if (ans1 === "electronic" && ans2 === "processes" && ans3 === "information" && ans4 === "component") {
+    document.getElementById("feedback").textContent = "🎉 Hebat! Jawaban anda benar!";
+    document.getElementById("feedback").style.color = "green";
+  } else {
+    document.getElementById("feedback").textContent = "❌ Maaf, jawaban anda salah. Ulangi lagi!";
+    document.getElementById("feedback").style.color = "red";
+  }
+}
+
+function resetAnswers() {
+  document.getElementById("ans1").value = "";
+  document.getElementById("ans2").value = "";
+  document.getElementById("ans3").value = "";
+  document.getElementById("ans4").value = "";
+  document.getElementById("feedback").textContent = "";
+}
+</script>
+</body>
+</html>
