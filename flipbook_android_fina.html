@@ -3,23 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flipbook dengan Back Cover</title>
+<title>Flipbook Responsif</title>
 <style>
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     margin: 0;
-    background: url('https://finaim81-ux.github.io/picture/1HP.jpg') no-repeat center center fixed;
-    background-size: cover;
+    background-color: white; /* Background putih polos */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100dvh; /* stabil di Android */
+    height: 100vh; /* fallback */
+    min-height: 100dvh; /* stabil di Android */
     overflow: hidden;
   }
 
   .book {
-    width: 90%;           
-    max-width: 550px;     
-    aspect-ratio: 3/5;    
+    width: 95vw;          /* Lebar menyesuaikan layar HP */
+    max-width: 400px;     /* Batas maksimal agar tidak terlalu besar di tablet */
+    aspect-ratio: 3/5;    /* Proporsi seperti buku */
     position: relative;
     perspective: 2000px;
   }
@@ -31,28 +35,32 @@
     transform-origin: left center;
     transition: transform 1s ease-in-out, z-index 0s 1s;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    background: #F5F5F5;
-    overflow: hidden;       
+    background: #fefefe;
+    overflow: hidden;
     border-radius: 6px;
+    backface-visibility: hidden;
   }
 
-  .page-content {
-    width: 100%;
-    height: 100%;
-  }
-
-  /* cover depan */
-  .cover img {
+  .page img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 6px;
     display: block;
   }
 
-  /* back cover */
+  /* Cover depan */
+  .cover img {
+    border-radius: 6px;
+  }
+
+  /* Back cover */
   .back-cover {
-    background: lightblue;
+    background: #e0e0e0;
+  }
+
+  /* Efek bayangan balik halaman */
+  .flipped {
+    box-shadow: -5px 0 10px rgba(0,0,0,0.2);
   }
 </style>
 </head>
@@ -61,28 +69,28 @@
   <!-- Halaman 1 -->
   <div class="page" data-page="1">
     <div class="page-content">
-      <img src="https://finaim81-ux.github.io/picture/2HP.jpg" width="530" height="870" alt="Halaman 1">
+      <img src="https://finaim81-ux.github.io/picture/2HP.jpg" alt="Halaman 1">
     </div>
   </div>
 
   <!-- Halaman 2 -->
   <div class="page" data-page="2">
     <div class="page-content">
-      <img src="https://finaim81-ux.github.io/picture/3HP.jpg" width="530" height="870" alt="Halaman 2">
+      <img src="https://finaim81-ux.github.io/picture/3HP.jpg" alt="Halaman 2">
     </div>
   </div>
 
   <!-- Halaman 3 -->
   <div class="page" data-page="3">
     <div class="page-content">
-      <img src="https://finaim81-ux.github.io/picture/4HP.jpg" width="530" height="870" alt="Halaman 3">
+      <img src="https://finaim81-ux.github.io/picture/4HP.jpg" alt="Halaman 3">
     </div>
   </div>
 
   <!-- Halaman 4 -->
   <div class="page" data-page="4">
     <div class="page-content">
-      <img src="https://finaim81-ux.github.io/picture/5HP.jpg" width="530" height="870" alt="Halaman 4">
+      <img src="https://finaim81-ux.github.io/picture/5HP.jpg" alt="Halaman 4">
     </div>
   </div>
 
@@ -100,13 +108,14 @@
   let zIndexCounter = 1;
 
   pages.forEach((page, index) => {
-    // cover depan selalu di atas
+    // Atur urutan tumpukan halaman
     if (page.classList.contains("cover")) {
       page.style.zIndex = pages.length + 10;
     } else {
       page.style.zIndex = pages.length - index;
     }
 
+    // Klik untuk balik halaman
     page.addEventListener("click", () => {
       if (!page.classList.contains("flipped")) {
         page.style.transform = "rotateY(-180deg)";
